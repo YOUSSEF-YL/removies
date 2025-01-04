@@ -6,6 +6,7 @@ export const useMovieContext = () => useContext(MovieContext)
 
 export const MovieProvider = ({children}) => {
     const [favorites, setFavorites] = useState([])
+     const [selectedTvSerie, setsekectedTvSerie] = useState([]);
 
     useEffect(() => {
          // locking for fv movies
@@ -33,9 +34,15 @@ export const MovieProvider = ({children}) => {
     const isOnFavorites = (id) => {
         return favorites.some(movie => movie.id === id)
     }
+
+    const curentTVs  = (TvSerie) => {
+        setsekectedTvSerie(TvSerie)
+    }
+
     // passing the value to M_ContextProvider
     const value = {
-        favorites,addToFavorites,favoritesRemover, isOnFavorites
+        favorites,addToFavorites,favoritesRemover,
+         isOnFavorites,selectedTvSerie,curentTVs
     }
 
     return <MovieContext.Provider value={value}>

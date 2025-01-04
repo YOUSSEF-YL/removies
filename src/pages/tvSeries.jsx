@@ -1,31 +1,32 @@
-import MovieCard from "../components/MovieCard";
+import MovieCard from "../components/TvCard";
 import { useState, useEffect } from "react";
 import '../assets/css/vapor.css'
 import '../assets/css/Home.css'
-import { searchMovies, getPopularMovies } from "../services/Api";
+import { searchMovies, searchTvshow,getTrendingtrows } from "../services/Api";
+import TvCard from "../components/TvCard";
 
 
-function Home() {
+function TvSeries() {
   
   const [searchQuery, setSearchQuery] = useState("");
-  const [movies, setMovies] = useState([]);
+  const [TvSeries, setTvSeries] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadPopularMovies = async () => {
+    const loadTvSerieslist = async () => {
       try {
-        const popularMovies = await getPopularMovies();
-        setMovies(popularMovies);
+        const TvSerieslist = await getTrendingtrows();
+        setTvSeries(TvSerieslist);
       } catch (err) {
         console.log(err);
-        setError("Failed to load movies...");
+        setError("Failed to load TvSeries...");
       } finally {
         setLoading(false);
       }
     };
 
-    loadPopularMovies();
+    loadTvSerieslist();
   }, []);
 
   const handleSearch = async (e) => {
@@ -35,13 +36,13 @@ function Home() {
 
     setLoading(true)
     try {
-        const searchResults = await searchMovies(searchQuery)
-        setMovies(searchResults)
+        const searchResults = await searchTvshow(searchQuery)
+        setTvSeries(searchResults)
         setError(null)
     } catch (err) 
     {
         console.log(err)
-        setError("Failed to find movies...")
+        setError("Failed to find TvSeries...")
     } finally {
         setLoading(false)
     }
@@ -68,8 +69,8 @@ function Home() {
         <div className="loading">Loading...</div>
       ) : (
         <div className="movies-grid">
-          {movies.map((movie) => (
-            <MovieCard movie={movie} key={movie.id} />
+          {TvSeries.map((TvSerie) => (
+            <TvCard TvSerie={TvSerie} key={TvSerie.id} />
           ))}
         </div>
       )}
@@ -77,4 +78,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default TvSeries;
